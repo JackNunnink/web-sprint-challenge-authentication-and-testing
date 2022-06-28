@@ -19,10 +19,10 @@ module.exports = (req, res, next) => {
 
   if(token) {
     jwt.verify(token, JWT_SECRET, async (err, decoded) => {
-      // if (err != null) {
-      //   res.status(401).json({ message: 'token invalid' });
-      //   return;
-      // }
+      if (err != null) {
+        res.status(401).json({ message: 'token invalid' });
+        return;
+      }
 
       const user = await Users.findById(decoded.id);
       if(user == null) {
