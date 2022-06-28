@@ -26,14 +26,14 @@ module.exports = (req, res, next) => {
 
       const user = await Users.findById(decoded.id);
       if(user == null) {
-        res.status(401).json({ message: 'token required' })
+        res.status(401).json({ message: 'token invalid' });
         return;
       }
-
+      
       req.decodedJwt = decoded;
       next();
     })
   } else {
-    res.status(401).json({ message: 'token invalid' });
+    res.status(401).json({ message: 'token required' })
   }
 };
