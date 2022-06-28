@@ -20,10 +20,15 @@ test('sanity', async () => {
   expect(process.env.NODE_ENV).toBe('testing');
 })
 
+const object = {
+  "id": 1,
+  "username": "Jack",
+}
+
 describe('auth HTTP register tests', () => {
   test('POST register works', async () => {
     let res = await request(server).post('/api/auth/register').send({ username: 'Jack', password: '1234' })
-    expect(res.body.message).toBe('Welcome Jack')
+    expect(res.body).toMatchObject(object)
   })
   test('POSTing empty username or password returns error', async () => {
     let res = await request(server).post('/api/auth/register').send({ password: '1234' })
