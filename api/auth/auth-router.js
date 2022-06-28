@@ -7,7 +7,7 @@ const Users = require('../users/users-model');
 
 const { JWT_SECRET } = require('../config/index')
 
-router.post('/register', (req, res, next) => {
+router.post('/register', (req, res) => {
   /*
     IMPLEMENT
     You are welcome to build additional middlewares to help with the endpoint's functionality.
@@ -40,14 +40,16 @@ router.post('/register', (req, res, next) => {
 
   user.password = hash;
 
-  if(!user.username || !user.password) {
+  if(user.username == null || user.password == null) {
     res.status(401).json({ message: 'username and password required' })
   } else {    
     Users.add(user)
       .then(saved => {
           res.status(201).json(saved)
       })
-      .catch(next)
+      .catch(err => {
+        res.status(500).json({ message: 'username taken' })
+      })
   }
 });
 
